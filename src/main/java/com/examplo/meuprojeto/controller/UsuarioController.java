@@ -3,7 +3,7 @@ package com.examplo.meuprojeto.controller;
 
 import com.examplo.meuprojeto.dto.UsuarioRequestDTO;
 import com.examplo.meuprojeto.dto.UsuarioResponseDTO;
-import com.examplo.meuprojeto.service.UsuarioServece;
+import com.examplo.meuprojeto.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,33 +15,33 @@ import java.util.List;
 public class UsuarioController {
 
     @Autowired
-    private UsuarioServece usuarioServece;
+    private UsuarioService usuarioService;
 
-    @GetMapping("/listar")
+    @GetMapping()
     public List<UsuarioResponseDTO> listarUsuario() {
 
-        return  usuarioServece.listarUsuarios();
+        return  usuarioService.listarUsuarios();
     }
    @GetMapping("/{id}")
    public  ResponseEntity<UsuarioResponseDTO> buscarUsuario(@PathVariable Long id) {
-       return  usuarioServece.buscarUsuario(id).map(ResponseEntity::ok)
+       return  usuarioService.buscarUsuario(id).map(ResponseEntity::ok)
                .orElse(ResponseEntity.notFound().build());
    }
 
-   @PostMapping("/criar")
+   @PostMapping()
    public ResponseEntity<UsuarioResponseDTO> criarUsuario(@RequestBody UsuarioRequestDTO usuarioRequestDTO) {
-        UsuarioResponseDTO usuarioResponseDTO = usuarioServece.criarUsuario(usuarioRequestDTO);
+        UsuarioResponseDTO usuarioResponseDTO = usuarioService.criarUsuario(usuarioRequestDTO);
         return ResponseEntity.status(201).build();
    }
 
    @PutMapping("/{id}")
-   public ResponseEntity<UsuarioResponseDTO> atualizarUsuario(@PathVariable Long id, UsuarioRequestDTO usuarioRequestDTO) {
-        return usuarioServece.atualizarUsuario(id,usuarioRequestDTO).map(ResponseEntity::ok)
+   public ResponseEntity<UsuarioResponseDTO> atualizarUsuario(@PathVariable Long id, @RequestBody UsuarioRequestDTO usuarioRequestDTO) {
+        return usuarioService.atualizarUsuario(id,usuarioRequestDTO).map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
    }
    @DeleteMapping("/{id}")
    public ResponseEntity<Void> deletarUsuario(@PathVariable Long id) {
-         usuarioServece.deletarUsuario(id);
+         usuarioService.deletarUsuario(id);
          return ResponseEntity.noContent().build();
    }
 

@@ -8,8 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 @Service
-@Component
-public interface UsuarioServece {
+public interface UsuarioService {
 
     List<UsuarioResponseDTO> listarUsuarios();
     Optional<UsuarioResponseDTO>buscarUsuario(Long id);

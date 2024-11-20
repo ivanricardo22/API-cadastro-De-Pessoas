@@ -5,7 +5,6 @@ import com.examplo.meuprojeto.dto.UsuarioResponseDTO;
 import com.examplo.meuprojeto.entity.Usuario;
 import com.examplo.meuprojeto.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,11 +12,12 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@Component
-public class UsuarioServiceImpl implements UsuarioServece {
+public class UsuarioServiceImpl implements UsuarioService {
 
 
     @Autowired private UsuarioRepository usuarioRepository;
+
+
 
 
     @Override
@@ -42,8 +42,9 @@ public class UsuarioServiceImpl implements UsuarioServece {
         return usuarioRepository.findById(id)
                 .map(u -> {
                 u.setNome(usuarioRequestDTO.getNome());
-                u.setEmail(usuarioRequestDTO.getEmail());
-                u.setIdade(usuarioRequestDTO.getIdade());
+                u.setDataDeAniversario(usuarioRequestDTO.getDataDeAniversario());
+                u.setTelefone(usuarioRequestDTO.getTelefone());
+                u.setEndereco(usuarioRequestDTO.getEndereco());
 
                 return convertToResponseDTO(usuarioRepository.save(u));
 
@@ -60,15 +61,17 @@ public class UsuarioServiceImpl implements UsuarioServece {
         UsuarioResponseDTO dto = new UsuarioResponseDTO();
         dto.setId(usuario.getId());
         dto.setNome(usuario.getNome());
-        dto.setEmail(usuario.getEmail());
-        dto.setIdade(usuario.getIdade());
+        dto.setDataDeAniversario(usuario.getDataDeAniversario());
+        dto.setTelefone(usuario.getTelefone());
+        dto.setEndereco(usuario.getEndereco());
         return dto; }
 
     private Usuario convertToEntity(UsuarioRequestDTO dto) {
         Usuario usuario = new Usuario();
         usuario.setNome(dto.getNome());
-        usuario.setEmail(dto.getEmail());
-        usuario.setIdade(dto.getIdade());
+        usuario.setDataDeAniversario(dto.getDataDeAniversario());
+        usuario.setTelefone(dto.getTelefone());
+        usuario.setEndereco(dto.getEndereco());
         return usuario;
     }
 }
