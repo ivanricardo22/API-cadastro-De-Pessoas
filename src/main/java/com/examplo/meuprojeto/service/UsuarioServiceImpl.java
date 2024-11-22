@@ -41,10 +41,10 @@ public class UsuarioServiceImpl implements UsuarioService {
     public Optional<UsuarioResponseDTO> atualizarUsuario(Long id, UsuarioRequestDTO usuarioRequestDTO) {
         return usuarioRepository.findById(id)
                 .map(u -> {
-                u.setNome(usuarioRequestDTO.getNome());
-                u.setDataDeAniversario(usuarioRequestDTO.getDataDeAniversario());
-                u.setTelefone(usuarioRequestDTO.getTelefone());
-                u.setEndereco(usuarioRequestDTO.getEndereco());
+                u.setName(usuarioRequestDTO.getName());
+                u.setBirthData(usuarioRequestDTO.getBirthData());
+                u.setTelephone(usuarioRequestDTO.getTelephone());
+                u.setAddress(usuarioRequestDTO.getAddress());
 
                 return convertToResponseDTO(usuarioRepository.save(u));
 
@@ -60,18 +60,18 @@ public class UsuarioServiceImpl implements UsuarioService {
     private UsuarioResponseDTO convertToResponseDTO(Usuario usuario) {
         UsuarioResponseDTO dto = new UsuarioResponseDTO();
         dto.setId(usuario.getId());
-        dto.setNome(usuario.getNome());
-        dto.setDataDeAniversario(usuario.getDataDeAniversario());
-        dto.setTelefone(usuario.getTelefone());
-        dto.setEndereco(usuario.getEndereco());
+        dto.setName(usuario.getName());
+        dto.setBirthData(usuario.getBirthData());
+        dto.setTelephone(usuario.getTelephone());
+        dto.setAddress(usuario.getAddress());
         return dto; }
 
     private Usuario convertToEntity(UsuarioRequestDTO dto) {
         Usuario usuario = new Usuario();
-        usuario.setNome(dto.getNome());
-        usuario.setDataDeAniversario(dto.getDataDeAniversario());
-        usuario.setTelefone(dto.getTelefone());
-        usuario.setEndereco(dto.getEndereco());
+        usuario.setName(dto.getName());
+        usuario.setBirthData(dto.getBirthData());
+        usuario.setTelephone(dto.getTelephone());
+        usuario.setAddress(dto.getAddress());
         return usuario;
     }
 }

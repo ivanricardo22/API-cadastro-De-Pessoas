@@ -12,9 +12,9 @@ import java.util.Date;
 public class UsuarioResponseDTO {
 
     private Long id;
-    private String nome;
-    private Date dataDeAniversario;
-    private String telefone;
-    private String endereco;
+    private String name;
+    private Date birthData;
+    private String telephone;
+    private String address;
 
 }

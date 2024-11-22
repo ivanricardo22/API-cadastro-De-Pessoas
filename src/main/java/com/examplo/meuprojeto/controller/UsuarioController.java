@@ -5,6 +5,7 @@ import com.examplo.meuprojeto.dto.UsuarioRequestDTO;
 import com.examplo.meuprojeto.dto.UsuarioResponseDTO;
 import com.examplo.meuprojeto.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -31,7 +32,7 @@ public class UsuarioController {
    @PostMapping()
    public ResponseEntity<UsuarioResponseDTO> criarUsuario(@RequestBody UsuarioRequestDTO usuarioRequestDTO) {
         UsuarioResponseDTO usuarioResponseDTO = usuarioService.criarUsuario(usuarioRequestDTO);
-        return ResponseEntity.status(201).build();
+       return ResponseEntity.status(HttpStatus.CREATED).body(usuarioResponseDTO); // Retorna 201 com o corpo
    }
 
    @PutMapping("/{id}")

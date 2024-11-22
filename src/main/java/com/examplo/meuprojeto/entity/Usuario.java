@@ -7,35 +7,26 @@ import java.util.Date;
 
 @Getter
 @Setter
-//@AllArgsConstructor
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "igreja_alianca_batista")
 public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID")
     private Long id;
 
-    @Column(name = "NAME", nullable = false)
-    private String nome;
 
-    @Column(name = "BIRTH_DATA", nullable = false)
-    private Date dataDeAniversario;
+    private String name;
 
-    @Column(name = "TELEPHONE")
-    private String telefone;
 
-    @Column(name = "ADDRESS")
-    private String endereco;
+    private Date birthData;
 
-    public Usuario(Long id, String nome, Date dataDeAniversario, String telefone, String endereco) {
-        this.id = id;
-        this.nome = nome;
-        this.dataDeAniversario = dataDeAniversario;
-        this.telefone = telefone;
-        this.endereco = endereco;
-    }
+    private String telephone;
+    private String address;
+
+
 
 
 
