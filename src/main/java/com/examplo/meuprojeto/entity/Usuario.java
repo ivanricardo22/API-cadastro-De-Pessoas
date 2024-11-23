@@ -19,10 +19,7 @@ public class Usuario {
 
 
     private String name;
-
-
     private Date birthData;
-
     private String telephone;
     private String address;
 
