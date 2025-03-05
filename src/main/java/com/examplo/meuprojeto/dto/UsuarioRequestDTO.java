@@ -1,11 +1,12 @@
 package com.examplo.meuprojeto.dto;
 
-import jakarta.persistence.Column;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Date;
 
-//@Data
 @Getter
 @Setter
 @NoArgsConstructor
