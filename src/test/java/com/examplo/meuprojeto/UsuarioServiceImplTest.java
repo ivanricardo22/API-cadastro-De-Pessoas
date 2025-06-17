@@ -2,7 +2,7 @@ package com.examplo.meuprojeto;
 
 import com.examplo.meuprojeto.dto.UsuarioRequestDTO;
 import com.examplo.meuprojeto.dto.UsuarioResponseDTO;
-import com.examplo.meuprojeto.entity.Usuario;
+import com.examplo.meuprojeto.model.Usuario;
 import com.examplo.meuprojeto.repository.UsuarioRepository;
 import com.examplo.meuprojeto.service.UsuarioServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,10 +14,10 @@ import org.springframework.dao.DataIntegrityViolationException;
 
 import static org.mockito.Mockito.*;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,10 +44,10 @@ public class UsuarioServiceImplTest {
     public void listarUsuariosComSucesso(){
 
         LocalDate localDate = LocalDate.of(1999, 2, 25);
-        Date dataNascimento = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        LocalDate dataNascimento = LocalDate.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
         LocalDate localDate2 = LocalDate.of(2000, 12, 1);
-        Date dataNascimento2 = Date.from(localDate2.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        LocalDate dataNascimento2 = LocalDate.from(localDate2.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
 
 
@@ -101,11 +101,11 @@ public class UsuarioServiceImplTest {
         usuario2.setName("Ricardo");
 
         LocalDate localDate = LocalDate.of(1999, 2, 25);
-        Date dataNascimento = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        LocalDate dataNascimento = LocalDate.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
         usuario.setBirthData(dataNascimento);
 
         LocalDate localDate2 = LocalDate.of(2000, 12, 1);
-        Date dataNascimento2 = Date.from(localDate2.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        LocalDate dataNascimento2 = LocalDate.from(localDate2.atStartOfDay(ZoneId.systemDefault()).toInstant());
         usuario2.setBirthData(dataNascimento2);
 
         usuario.setTelephone("(81)9 99109-9496");
@@ -155,13 +155,13 @@ public class UsuarioServiceImplTest {
 
 
     @Test
-    public void criarUsuarioComSucesso() {
+    public void criarUsuarioComSucesso() throws IOException {
 
         LocalDate localDate = LocalDate.of(1999, 2, 25);
-        Date dataNascimento = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        LocalDate dataNascimento = LocalDate.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
         LocalDate localDate2 = LocalDate.of(2000, 12, 1);
-        Date dataNascimento2 = Date.from(localDate2.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        LocalDate dataNascimento2 = LocalDate.from(localDate2.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
         // Dados de entrada
         UsuarioRequestDTO usuarioRequestDTO = new UsuarioRequestDTO("Ivan",dataNascimento,"(81)9 99109-9496","Rua Arroz");
@@ -210,10 +210,10 @@ public class UsuarioServiceImplTest {
     public void criarUsuarioSemSucesso() {
 
         LocalDate localDate = LocalDate.of(1999, 2, 25);
-        Date dataNascimento = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        LocalDate dataNascimento = LocalDate.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
         LocalDate localDate2 = LocalDate.of(1999, 2, 25);
-        Date dataNascimento2 = Date.from(localDate2.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        LocalDate dataNascimento2 = LocalDate.from(localDate2.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
 
         // Dados de entrada

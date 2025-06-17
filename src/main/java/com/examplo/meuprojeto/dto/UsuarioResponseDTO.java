@@ -1,20 +1,27 @@
 package com.examplo.meuprojeto.dto;
 
 
-import jakarta.persistence.Column;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDate;
+
 
 @Setter
 @Getter
 public class UsuarioResponseDTO {
 
     private Long id;
+
     private String name;
-    private Date birthData;
+
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    private LocalDate birthData;
+
     private String telephone;
+
     private String address;
 
 }
