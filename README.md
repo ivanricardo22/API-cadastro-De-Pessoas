@@ -1,4 +1,4 @@
-# Projeto de Cadastro
+# API Cadastro de pesssoas
 
 ## 📝 Descrição
 Sistema de cadastro desenvolvido com Spring Boot e PostgreSQL. Este projeto implementa uma API RESTful para gerenciamento de cadastros.
