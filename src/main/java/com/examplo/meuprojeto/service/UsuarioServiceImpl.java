@@ -102,4 +102,5 @@ public class UsuarioServiceImpl implements UsuarioService {
          return usuarioRepository.findById(id).orElseThrow(() -> new BadRequestException("id não encontrado"));
     }
 
+
 }
