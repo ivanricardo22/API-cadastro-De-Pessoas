@@ -1,8 +1,8 @@
-package com.examplo.meuprojeto.controller;
+package com.examplo.cadastro.controller;
 
-import com.examplo.meuprojeto.dto.UsuarioRequestDTO;
-import com.examplo.meuprojeto.dto.UsuarioResponseDTO;
-import com.examplo.meuprojeto.service.UsuarioService;
+import com.examplo.cadastro.dto.UsuarioRequestDTO;
+import com.examplo.cadastro.dto.UsuarioResponseDTO;
+import com.examplo.cadastro.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

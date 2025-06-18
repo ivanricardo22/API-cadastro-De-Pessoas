@@ -1,4 +1,4 @@
-package com.examplo.meuprojeto.model;
+package com.examplo.cadastro.model;
 
 
 import jakarta.persistence.*;

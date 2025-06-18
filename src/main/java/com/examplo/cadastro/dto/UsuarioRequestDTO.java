@@ -1,4 +1,4 @@
-package com.examplo.meuprojeto.dto;
+package com.examplo.cadastro.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

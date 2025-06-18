@@ -1,10 +1,10 @@
-package com.examplo.meuprojeto.service;
+package com.examplo.cadastro.service;
 
-import com.examplo.meuprojeto.dto.UsuarioRequestDTO;
-import com.examplo.meuprojeto.dto.UsuarioResponseDTO;
-import com.examplo.meuprojeto.exception.BadRequestException;
-import com.examplo.meuprojeto.model.Usuario;
-import com.examplo.meuprojeto.repository.UsuarioRepository;
+import com.examplo.cadastro.dto.UsuarioRequestDTO;
+import com.examplo.cadastro.dto.UsuarioResponseDTO;
+import com.examplo.cadastro.exception.BadRequestException;
+import com.examplo.cadastro.model.Usuario;
+import com.examplo.cadastro.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.examplo.meuprojeto;
+package com.examplo.cadastro;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,10 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 @SpringBootApplication
-public class MeuprojetoApplication {
+public class CadastroApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(MeuprojetoApplication.class, args);
+		SpringApplication.run(CadastroApplication.class, args);
 	}
 
 

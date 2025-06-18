@@ -1,7 +1,7 @@
-package com.examplo.meuprojeto.service;
+package com.examplo.cadastro.service;
 
-import com.examplo.meuprojeto.dto.UsuarioRequestDTO;
-import com.examplo.meuprojeto.dto.UsuarioResponseDTO;
+import com.examplo.cadastro.dto.UsuarioRequestDTO;
+import com.examplo.cadastro.dto.UsuarioResponseDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.examplo.meuprojeto.exception;
+package com.examplo.cadastro.exception;
 
 import lombok.Getter;
 

@@ -1,8 +1,8 @@
-package com.examplo.meuprojeto.integration;
+package com.examplo.cadastro.integration;
 
 
-import com.examplo.meuprojeto.dto.UsuarioRequestDTO;
-import com.examplo.meuprojeto.service.UsuarioService;
+import com.examplo.cadastro.dto.UsuarioRequestDTO;
+import com.examplo.cadastro.service.UsuarioService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
