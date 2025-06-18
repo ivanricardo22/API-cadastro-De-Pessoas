@@ -1,5 +1,8 @@
 package com.examplo.meuprojeto.exception;
 
+import lombok.Getter;
+
+@Getter
 public class ApiException extends RuntimeException {
 
   private final String code;
@@ -7,9 +10,11 @@ public class ApiException extends RuntimeException {
   private final Integer statusCode;
 
     public ApiException(String code, String description, Integer statusCode) {
+      super(description);
         this.code = code;
         this.description = description;
         this.statusCode = statusCode;
+
 
     }
 
@@ -21,15 +26,4 @@ public class ApiException extends RuntimeException {
 
   }
 
-  public String getCode() {
-    return code;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public Integer getStatusCode() {
-    return statusCode;
-  }
 }

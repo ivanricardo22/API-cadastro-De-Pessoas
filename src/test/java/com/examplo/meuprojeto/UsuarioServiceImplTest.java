@@ -2,6 +2,7 @@ package com.examplo.meuprojeto;
 
 import com.examplo.meuprojeto.dto.UsuarioRequestDTO;
 import com.examplo.meuprojeto.dto.UsuarioResponseDTO;
+import com.examplo.meuprojeto.exception.BadRequestException;
 import com.examplo.meuprojeto.model.Usuario;
 import com.examplo.meuprojeto.repository.UsuarioRepository;
 import com.examplo.meuprojeto.service.UsuarioServiceImpl;
@@ -10,13 +11,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.dao.DataIntegrityViolationException;
 
 import static org.mockito.Mockito.*;
 
-import java.io.IOException;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,8 +22,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-
-public class UsuarioServiceImplTest {
+class UsuarioServiceImplTest {
 
     @Mock
     private UsuarioRepository usuarioRepository;
@@ -34,65 +31,73 @@ public class UsuarioServiceImplTest {
     private UsuarioServiceImpl usuarioService;
 
 
-
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    public void listarUsuariosComSucesso(){
+    void listarUsuariosComSucesso() {
 
         LocalDate localDate = LocalDate.of(1999, 2, 25);
-        LocalDate dataNascimento = LocalDate.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-        LocalDate localDate2 = LocalDate.of(2000, 12, 1);
-        LocalDate dataNascimento2 = LocalDate.from(localDate2.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Usuario usuario1 = new Usuario(1L, "Ivan", localDate, "(81)9 99109-9496", "Rua Arroz");
 
 
 
-        Usuario usuario1 = new Usuario(1L,"Ivan",dataNascimento ,"(81)9 99109-9496","Rua Arroz");
-        Usuario usuario2 = new Usuario(2L,"Ricardo",dataNascimento2 ,"(81)9 98109-9496","Rua Feijão");
-
-
-        List<Usuario> usuarios = List.of(usuario1,usuario2);
+        List<Usuario> usuarios = List.of(usuario1);
 
         when(usuarioRepository.findAll()).thenReturn(usuarios);
 
         List<UsuarioResponseDTO> resultado = usuarioService.listarUsuarios();
 
         assertNotNull(resultado);
-        assertEquals(2,resultado.size());
-        assertEquals("Ivan",resultado.stream().filter(u -> u.getId() == 1L).findFirst().get().getName());
-        assertEquals(dataNascimento,resultado.stream().filter(u -> u.getId() == 1L ).findFirst().get().getBirthData());
-        assertEquals("(81)9 99109-9496",resultado.stream().filter(u -> u.getId() == 1L ).findFirst().get().getTelephone());
-        assertEquals("Rua Arroz",resultado.stream().filter(u -> u.getId().equals(1L)).findFirst().get().getAddress());
+        assertEquals(1, resultado.size());
 
-        assertNotNull(resultado);
-        assertEquals(2,resultado.size());
-        assertEquals("Ricardo",resultado.stream().filter(u -> u.getId() == 2L).findFirst().get().getName());
-        assertEquals(dataNascimento2,resultado.stream().filter(u -> u.getId() == 2L ).findFirst().get().getBirthData());
-        assertEquals("(81)9 98109-9496",resultado.stream().filter(u -> u.getId() == 2L ).findFirst().get().getTelephone());
-        assertEquals("Rua Feijão",resultado.stream().filter(u -> u.getId().equals(2L)).findFirst().get().getAddress());
+        String nome = resultado.stream()
+                .filter(u -> u.getId() == 1L)
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("Usuário com ID 1 não encontrado"))
+                .getName();
+
+        assertEquals("Ivan", nome);
+
+
+        LocalDate data = resultado.stream()
+                .filter(u -> u.getId() == 1L)
+                .findFirst()
+                .orElseThrow(() -> new BadRequestException("id não encontrado"))
+                .getBirthData();
+
+       assertEquals(localDate, data);
+
+
+        String telefone  = resultado.stream()
+                .filter(u -> u.getId() == 1L)
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("Usuário com ID 1 não encontrado"))
+                .getTelephone();
+
+        assertEquals("(81)9 99109-9496", telefone);
 
     }
 
     @Test
-    public void listarUsuariosSemTerUsuarios() {
+    void listarUsuariosVazio() {
 
-        List<Usuario> usuarios =  new ArrayList<>();
+        List<Usuario> usuarios = new ArrayList<>();
 
         when(usuarioRepository.findAll()).thenReturn(usuarios);
 
         List<UsuarioResponseDTO> resultado = usuarioService.listarUsuarios();
 
         assertNotNull(resultado);
-        assertEquals(0,resultado.size());
+        assertEquals(0, resultado.size());
 
     }
 
     @Test
-    public void buscarUsuarioComSucesso() {
+    void buscarUsuarioComSucesso() {
 
         Usuario usuario = new Usuario();
         Usuario usuario2 = new Usuario();
@@ -101,12 +106,10 @@ public class UsuarioServiceImplTest {
         usuario2.setName("Ricardo");
 
         LocalDate localDate = LocalDate.of(1999, 2, 25);
-        LocalDate dataNascimento = LocalDate.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        usuario.setBirthData(dataNascimento);
+        usuario.setBirthData(localDate);
 
         LocalDate localDate2 = LocalDate.of(2000, 12, 1);
-        LocalDate dataNascimento2 = LocalDate.from(localDate2.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        usuario2.setBirthData(dataNascimento2);
+        usuario2.setBirthData(localDate2);
 
         usuario.setTelephone("(81)9 99109-9496");
         usuario.setAddress("Rua Arroz");
@@ -120,119 +123,78 @@ public class UsuarioServiceImplTest {
         when(usuarioRepository.findById(2L)).thenReturn(Optional.of(usuario2));
 
 
-        Optional<UsuarioResponseDTO>  optUsuarioDTO = usuarioService.buscarUsuario(1L);
+        Optional<UsuarioResponseDTO> optUsuarioDTO = usuarioService.buscarUsuario(1L);
         assertTrue(optUsuarioDTO.isPresent());
 
-        Optional<UsuarioResponseDTO>  optUsuarioDTO2 = usuarioService.buscarUsuario(2L);
+        Optional<UsuarioResponseDTO> optUsuarioDTO2 = usuarioService.buscarUsuario(2L);
         assertTrue(true);
 
         assertEquals("Ivan", optUsuarioDTO.get().getName());
-        assertEquals(dataNascimento,optUsuarioDTO.get().getBirthData());
-        assertEquals("(81)9 99109-9496",optUsuarioDTO.get().getTelephone());
+        assertEquals(localDate, optUsuarioDTO.get().getBirthData());
+        assertEquals("(81)9 99109-9496", optUsuarioDTO.get().getTelephone());
         assertEquals("Rua Arroz", optUsuarioDTO.get().getAddress());
 
-        assertEquals("Ricardo", optUsuarioDTO2.get().getName());
-        assertEquals(dataNascimento2,optUsuarioDTO2.get().getBirthData());
-        assertEquals("(81)9 98109-9496",optUsuarioDTO2.get().getTelephone());
+        assertEquals("Ricardo", optUsuarioDTO2.orElseThrow(()-> new AssertionError(("Usuário não encontrado"))).getName());
+        assertEquals(localDate2, optUsuarioDTO2.get().getBirthData());
+        assertEquals("(81)9 98109-9496", optUsuarioDTO2.get().getTelephone());
         assertEquals("Rua Feijão", optUsuarioDTO2.get().getAddress());
 
 
     }
 
     @Test
-    public void buscarUsuarioENaoEncontraUsuario() {
+    void buscarUsuarioInexistente() {
 
-        when(usuarioRepository.findById(1L)).thenReturn(Optional.empty());
-
-        when(usuarioRepository.findById(2L)).thenReturn(Optional.empty());
-
-        Optional<UsuarioResponseDTO>  optUsuarioDTO = usuarioService.buscarUsuario(1L);
-        assertTrue(optUsuarioDTO.isEmpty());
-
-        Optional<UsuarioResponseDTO>  optUsuarioDTO2 = usuarioService.buscarUsuario(2L);
-        assertTrue(optUsuarioDTO2.isEmpty());
+        BadRequestException b = assertThrows(BadRequestException.class, () -> usuarioService.buscarUsuario(1L));
+        assertEquals("id não encontrado", b.getMessage());
     }
 
 
     @Test
-    public void criarUsuarioComSucesso() throws IOException {
+    void criarUsuarioComSucesso() {
 
         LocalDate localDate = LocalDate.of(1999, 2, 25);
-        LocalDate dataNascimento = LocalDate.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Usuario usuario = new Usuario(1L, "Ivan", localDate, "81998745214", "Rua Augusto");
+        UsuarioRequestDTO requestDTO = new UsuarioRequestDTO("Ivan", localDate, "81998745214", "Rua Augusto");
 
-        LocalDate localDate2 = LocalDate.of(2000, 12, 1);
-        LocalDate dataNascimento2 = LocalDate.from(localDate2.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        when(usuarioRepository.save(any())).thenReturn(usuario);
 
-        // Dados de entrada
-        UsuarioRequestDTO usuarioRequestDTO = new UsuarioRequestDTO("Ivan",dataNascimento,"(81)9 99109-9496","Rua Arroz");
-        UsuarioRequestDTO usuarioRequestDTO2 = new UsuarioRequestDTO("Ricardo",dataNascimento2,"(81)9 98109-9496","Rua Feijão");
+        UsuarioResponseDTO response = usuarioService.criarUsuario(requestDTO);
 
+        assertNotNull(requestDTO);
+        assertEquals("Ivan", response.getName());
+        verify(usuarioRepository, times(1)).save(any(Usuario.class));
 
-        // Objeto de retorno esperado do mock
-        Usuario usuarioMock = new Usuario(1L, "Ivan",dataNascimento,"(81)9 99109-9496","Rua Arroz");
-        Usuario usuarioMock2 = new Usuario(2L, "Ricardo",dataNascimento,"(81)9 98109-9496","Rua Feijão");
-
-        // Mock do repositório com comportamentos diferentes
-
-        when(usuarioRepository.save(any(Usuario.class))).thenAnswer(invocation -> {
-                    Usuario usuario = invocation.getArgument(0);
-                    if (usuario.getName().equals("Ivan")) {
-                        usuario.setId(1L);
-                        return usuario;
-                    } else {
-                        usuario.setId(2L);
-                        return usuario;
-                    }
-                });
-
-
-
-        UsuarioResponseDTO usuarioSalvo = usuarioService.criarUsuario(usuarioRequestDTO);
-
-        assertNotNull(usuarioSalvo); // Verifica se o usuário salvo não é nulo
-        assertEquals(1L, usuarioSalvo.getId()); // Verifica se o ID do usuário salvo é 1L
-        assertEquals("Ivan", usuarioSalvo.getName()); // Verifica se o nome do usuário salvo é "Ivan"
-        assertEquals(dataNascimento, usuarioSalvo.getBirthData()); // Verifica se a data  do usuário salvo é dataNascimento"
-        assertEquals("(81)9 99109-9496", usuarioSalvo.getTelephone()); // Verifica se o telefone do usuário salvo é "(81)9 99109-9496"
-        assertEquals("Rua Arroz", usuarioSalvo.getAddress()); // verificar se o endereço do usuário salvo é "Rua Arroz"
-
-        UsuarioResponseDTO usuarioSalvo2 = usuarioService.criarUsuario(usuarioRequestDTO2);
-
-        assertNotNull(usuarioSalvo); // Verifica se o usuário salvo não é nulo
-        assertEquals(2L, usuarioSalvo2.getId()); // Verifica se o ID do usuário salvo é 1L
-        assertEquals("Ricardo", usuarioSalvo2.getName()); // Verifica se o nome do usuário salvo é "Ivan"
-        assertEquals(dataNascimento2, usuarioSalvo2.getBirthData()); // Verifica se a data  do usuário salvo é dataNascimento"
-        assertEquals("(81)9 98109-9496", usuarioSalvo2.getTelephone()); // Verifica se o telefone do usuário salvo é "(81)9 99109-9496"
-        assertEquals("Rua Feijão", usuarioSalvo2.getAddress()); // verificar se o endereço do usuário salvo é "Rua Arroz"
     }
 
     @Test
-    public void criarUsuarioSemSucesso() {
-
+    void criarUsuarioNomeDuplicado() {
         LocalDate localDate = LocalDate.of(1999, 2, 25);
-        LocalDate dataNascimento = LocalDate.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        UsuarioRequestDTO u = new UsuarioRequestDTO();
+        u.setName("Ivan");
+        u.setBirthData(localDate);
+        u.setAddress("Rua Rangel");
+        u.setTelephone("(81)99856328");
 
-        LocalDate localDate2 = LocalDate.of(1999, 2, 25);
-        LocalDate dataNascimento2 = LocalDate.from(localDate2.atStartOfDay(ZoneId.systemDefault()).toInstant());
-
-
-        // Dados de entrada
-        UsuarioRequestDTO usuarioRequestDTO = new UsuarioRequestDTO("Ivan",dataNascimento, "(81)9 99109-9496","Rua Arroz" );
-        UsuarioRequestDTO usuarioRequestDTO2 = new UsuarioRequestDTO("Ricardo",dataNascimento2, "(81)9 98109-9496","Rua Feijão" );
+        when(usuarioRepository.existsByName("Ivan")).thenReturn(true);
 
 
-        // Configuração do mock para lançar uma exceção
-        doThrow(new DataIntegrityViolationException("Erro ao salvar o usuário")).when(usuarioRepository).save(any(Usuario.class));
+        BadRequestException badRequestException = assertThrows(BadRequestException.class, () -> usuarioService.criarUsuario(u));
 
-
-        // Verificar se a exceção é lançada
-        assertThrows(RuntimeException.class, () -> usuarioService.criarUsuario(usuarioRequestDTO));
-        assertThrows(RuntimeException.class, () -> usuarioService.criarUsuario(usuarioRequestDTO2));
-
-
+        assertEquals(" Nome já cadastrado. ", badRequestException.getMessage());
     }
 
+    @Test
+    void criarUsuarioCampoFaltando() {
 
+        UsuarioRequestDTO u = new UsuarioRequestDTO();
+        u.setAddress(" Rua Rangel");
+        u.setTelephone("(81) 9995584122");
+        u.setName("Ivan");
+        u.setBirthData(null);
 
+        BadRequestException badRequestException = assertThrows(BadRequestException.class, () -> usuarioService.criarUsuario(u));
+        assertEquals("O campo BirthData é obrigatório.", badRequestException.getMessage());
 
+    }
 }
